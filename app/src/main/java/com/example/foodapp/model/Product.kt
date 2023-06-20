@@ -1,4 +1,7 @@
 package com.example.foodapp.model
 
-class Product {
-}
+data class Product(
+    val imgProduct: Int,
+    val name: String,
+    val price: String
+)
