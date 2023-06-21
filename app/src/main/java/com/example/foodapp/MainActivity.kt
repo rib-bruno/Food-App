@@ -6,12 +6,14 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.VIEW_MODEL_STORE_OWNER_KEY
+import androidx.recyclerview.widget.GridLayoutManager
 import com.example.foodapp.adapter.ProductAdapter
 import com.example.foodapp.databinding.ActivityMainBinding
 import com.example.foodapp.listitems.Products
 import com.example.foodapp.model.Product
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collectIndexed
 import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
@@ -20,7 +22,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var productAdapter: ProductAdapter
     private val products = Products()
-    private val productList
+    private val productList: MutableList<Product> = mutableListOf()
     var clicked = false
 
 
@@ -33,8 +35,20 @@ class MainActivity : AppCompatActivity() {
         window.statusBarColor = Color.parseColor("#E0E0E0")
 
         CoroutineScope(Dispatchers.IO).launch {
-
+            products.getProducts().collectIndexed { index, value ->
+                for (p in value) {
+                    productList.add(p)
+                }
+            }
         }
+
+        val recyclerViewProducts = binding.recyclerViewProducts
+        recyclerViewProducts.layoutManager = GridLayoutManager(this, 2)
+        recyclerViewProducts.setHasFixedSize(true)
+
+        productAdapter = ProductAdapter(this,productList)
+        recyclerViewProducts.adapter = productAdapter
+
 
 
         binding.btAll.setOnClickListener {
