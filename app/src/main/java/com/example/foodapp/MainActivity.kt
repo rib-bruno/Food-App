@@ -6,12 +6,21 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.VIEW_MODEL_STORE_OWNER_KEY
+import com.example.foodapp.adapter.ProductAdapter
 import com.example.foodapp.databinding.ActivityMainBinding
+import com.example.foodapp.listitems.Products
+import com.example.foodapp.model.Product
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
 
     //iniciando o binding
     private lateinit var binding: ActivityMainBinding
+    private lateinit var productAdapter: ProductAdapter
+    private val products = Products()
+    private val productList
     var clicked = false
 
 
@@ -20,6 +29,12 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        window.statusBarColor = Color.parseColor("#E0E0E0")
+
+        CoroutineScope(Dispatchers.IO).launch {
+
+        }
 
 
         binding.btAll.setOnClickListener {
